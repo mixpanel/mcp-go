@@ -87,7 +87,11 @@ func (s *sseSession) GetSessionTools() map[string]ServerTool {
 
 func (s *sseSession) SetSessionTools(tools map[string]ServerTool) {
 	// Clear existing tools
-	s.tools.Clear()
+
+	s.tools.Range(func(key, _ interface{}) bool {
+		s.tools.Delete(key)
+		return true
+	})
 
 	// Set new tools
 	for name, tool := range tools {
